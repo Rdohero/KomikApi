@@ -67,6 +67,7 @@ func GetKomikInfoKiryuu(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"title":    title,
 		"link":     link,
+		"source":   "kiryuu",
 		"sinopsis": sinopsis,
 		"genre":    genres,
 		"chapters": chapters,

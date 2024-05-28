@@ -79,6 +79,7 @@ func GetKomikInfo(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"title":    title,
 		"link":     link,
+		"source":   "komik_cast",
 		"sinopsis": sinopsis,
 		"genre":    genres,
 		"chapters": chapters,
