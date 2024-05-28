@@ -49,6 +49,7 @@ func fetchKomikInfo(url string) (string, []map[string]string, string, []Genre, s
 
 	var genres []Genre
 	genres = append(genres, Genre{Name: status})
+	genres = append(genres, Genre{Name: "Komik Cast"})
 
 	if typeInfo != "" && typeInfoLink != "" {
 		genres = append(genres, Genre{Name: typeInfo, Link: typeInfoLink})
