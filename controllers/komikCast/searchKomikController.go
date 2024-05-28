@@ -12,6 +12,7 @@ import (
 type KomikSearch struct {
 	Title      string `json:"title"`
 	Thumb      string `json:"thumb"`
+	Source     string `json:"source"`
 	Type       string `json:"type"`
 	Chapter    string `json:"chapter"`
 	Rating     string `json:"rating"`
@@ -55,6 +56,7 @@ func SearchKomik(c *gin.Context) {
 		k := KomikSearch{
 			Title:      strings.TrimSpace(title),
 			Thumb:      thumb,
+			Source:     "komik_cast",
 			Type:       s.Find(".list-update_item-image .type").Text(),
 			Chapter:    strings.TrimSpace(chapter),
 			Rating:     rating,

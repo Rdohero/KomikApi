@@ -12,6 +12,7 @@ import (
 type KomikSearchKiryuu struct {
 	Title    string `json:"title"`
 	Thumb    string `json:"thumb"`
+	Source   string `json:"source"`
 	Chapter  string `json:"chapter"`
 	Rating   string `json:"rating"`
 	KomikURL string `json:"komikUrl"`
@@ -52,6 +53,7 @@ func SearchKomikKiryuu(c *gin.Context) {
 
 		k := KomikSearchKiryuu{
 			Title:    strings.TrimSpace(title),
+			Source:   "kiryuu",
 			Thumb:    thumb,
 			Chapter:  strings.TrimSpace(chapter),
 			Rating:   rating,
