@@ -20,7 +20,7 @@ func fetchKomikInfoKiryuu(url string) (string, []map[string]string, string, []ko
 
 	var chapters []map[string]string
 	doc.Find(".clstyle li").Each(func(i int, s *goquery.Selection) {
-		chapter := strings.TrimSpace(strings.Replace(s.Find(".chapternum").Text(), "Chapter\n", "", -1))
+		chapter := strings.TrimSpace(strings.Replace(s.Find(".chapternum").Text(), "Chapter ", "", -1))
 		link, _ := s.Find(".eph-num a").Attr("href")
 		time := strings.TrimSpace(s.Find(".chapterdate").Text())
 
