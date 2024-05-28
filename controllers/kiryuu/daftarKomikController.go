@@ -14,6 +14,7 @@ type DaftarKomikModelKiryuu struct {
 	Thumb    string `json:"thumb"`
 	Chapter  string `json:"chapter"`
 	Rating   string `json:"rating"`
+	Source   string `json:"source"`
 	KomikURL string `json:"komikUrl"`
 }
 
@@ -62,6 +63,7 @@ func GetDaftarKomikKiryuu(page string) (KomikResponseKiryuu, error) {
 		daftarKomik = append(daftarKomik, DaftarKomikModelKiryuu{
 			Title:    strings.TrimSpace(title),
 			Thumb:    image,
+			Source:   "kiryuu",
 			Chapter:  chapter,
 			Rating:   strings.TrimSpace(rating),
 			KomikURL: link,
