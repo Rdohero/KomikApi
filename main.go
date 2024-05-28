@@ -3,7 +3,8 @@ package main
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"komikApi/controllers"
+	kiryuu2 "komikApi/controllers/kiryuu"
+	komikCast2 "komikApi/controllers/komikCast"
 	"komikApi/initializers"
 	"net/http"
 )
@@ -34,7 +35,7 @@ func main() {
 		order := c.Query("order")
 		page := c.Query("page")
 
-		response, err := controllers.GetDaftarKomik(order, page)
+		response, err := komikCast2.GetDaftarKomik(order, page)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -42,16 +43,16 @@ func main() {
 
 		c.JSON(http.StatusOK, response)
 	})
-	komikCast.GET("/fetch-data", controllers.GetDataHandler)
-	komikCast.GET("/komik-info", controllers.GetKomikInfo)
-	komikCast.GET("/search", controllers.SearchKomik)
-	komikCast.GET("/genre", controllers.GetGenreInfo)
-	komikCast.GET("/genre/komik", controllers.FetchComicsByGenre)
+	komikCast.GET("/fetch-data", komikCast2.GetDataHandler)
+	komikCast.GET("/komik-info", komikCast2.GetKomikInfo)
+	komikCast.GET("/search", komikCast2.SearchKomik)
+	komikCast.GET("/genre", komikCast2.GetGenreInfo)
+	komikCast.GET("/genre/komik", komikCast2.FetchComicsByGenre)
 
 	kiryuu.GET("/daftar-komik", func(c *gin.Context) {
 		page := c.Query("page")
 
-		response, err := controllers.GetDaftarKomikKiryuu(page)
+		response, err := kiryuu2.GetDaftarKomikKiryuu(page)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -59,9 +60,9 @@ func main() {
 
 		c.JSON(http.StatusOK, response)
 	})
-	kiryuu.GET("/search", controllers.SearchKomikKiryuu)
-	kiryuu.GET("/komik-info", controllers.GetKomikInfoKiryuu)
-	kiryuu.GET("/fetch-data", controllers.GetDataHandlerKiryuu)
+	kiryuu.GET("/search", kiryuu2.SearchKomikKiryuu)
+	kiryuu.GET("/komik-info", kiryuu2.GetKomikInfoKiryuu)
+	kiryuu.GET("/fetch-data", kiryuu2.GetDataHandlerKiryuu)
 
 	router.Run()
 }
