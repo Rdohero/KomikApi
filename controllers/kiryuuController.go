@@ -1,9 +1,10 @@
 package controllers
 
 import (
-	"errors"
+	"context"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/chromedp/chromedp"
 	"github.com/gin-gonic/gin"
 	"komikApi/allUrl"
 	"net/http"
@@ -134,20 +135,26 @@ func GetKomikInfoKiryuu(c *gin.Context) {
 	})
 }
 
-func fetchDataFromURLKiryuu(url string) ([]string, error) {
-	res, err := http.Get(url)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
+func fetchDataFromURLKiryuu(pageURL string) ([]string, error) {
+	// Create context
+	ctx, cancel := chromedp.NewContext(context.Background())
+	defer cancel()
 
-	if res.StatusCode != 200 {
-		return nil, fmt.Errorf("status code error: %d %s", res.StatusCode, res.Status)
+	// Navigate to the URL and retrieve the HTML content
+	var htmlContent string
+	err := chromedp.Run(ctx,
+		chromedp.Navigate(pageURL),
+		chromedp.WaitVisible(`div#readerarea`, chromedp.ByQuery),
+		chromedp.OuterHTML("html", &htmlContent),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("error navigating to the page: %v", err)
 	}
 
-	doc, err := goquery.NewDocumentFromReader(res.Body)
+	// Process the HTML content using goquery
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlContent))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error parsing HTML: %v", err)
 	}
 
 	var imgUrls []string
@@ -161,29 +168,31 @@ func fetchDataFromURLKiryuu(url string) ([]string, error) {
 	return imgUrls, nil
 }
 
-func fetchChapterURLsKiryuu(url string) (string, string, error) {
-	res, err := http.Get(url)
-	if err != nil {
-		return "", "", err
-	}
-	defer res.Body.Close()
+func fetchChapterURLsKiryuu(pageURL string) (string, string, error) {
+	ctx, cancel := chromedp.NewContext(context.Background())
+	defer cancel()
 
-	if res.StatusCode != 200 {
-		return "", "", fmt.Errorf("status code error: %d %s", res.StatusCode, res.Status)
+	var htmlContent string
+	err := chromedp.Run(ctx,
+		chromedp.Navigate(pageURL),
+		chromedp.WaitVisible(`div.nextprev`, chromedp.ByQuery),
+		chromedp.OuterHTML("html", &htmlContent),
+	)
+	if err != nil {
+		return "", "", fmt.Errorf("error navigating to the page: %v", err)
 	}
 
-	doc, err := goquery.NewDocumentFromReader(res.Body)
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlContent))
 	if err != nil {
-		return "", "", err
+		return "", "", fmt.Errorf("error parsing HTML: %v", err)
 	}
 
 	var nextChapterURL, prevChapterURL string
-	prevChapterRel := doc.Find("div.nextprev a.ch-prev-btn").AttrOr("href", "")
-	nextChapterRel := doc.Find("div.nextprev a.ch-next-btn").AttrOr("href", "")
-	prevChapterURL = url + prevChapterRel
-	nextChapterURL = url + nextChapterRel
+	prevChapterURL = doc.Find("div.nextprev a.ch-prev-btn").AttrOr("href", "")
+	nextChapterURL = doc.Find("div.nextprev a.ch-next-btn").AttrOr("href", "")
+
 	if nextChapterURL == "" && prevChapterURL == "" {
-		return "", "", errors.New("chapter URLs not found")
+		return "", "", fmt.Errorf("chapter URLs not found")
 	}
 
 	return nextChapterURL, prevChapterURL, nil
