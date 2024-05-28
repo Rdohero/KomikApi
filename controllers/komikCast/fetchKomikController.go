@@ -48,8 +48,8 @@ func fetchKomikInfo(url string) (string, []map[string]string, string, []Genre, s
 	typeInfoLink, _ := doc.Find(".komik_info-content-info-type a").Attr("href")
 
 	var genres []Genre
-	genres = append(genres, Genre{Name: status})
 	genres = append(genres, Genre{Name: "Komik Cast"})
+	genres = append(genres, Genre{Name: status})
 
 	if typeInfo != "" && typeInfoLink != "" {
 		genres = append(genres, Genre{Name: typeInfo, Link: typeInfoLink})

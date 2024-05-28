@@ -35,8 +35,8 @@ func fetchKomikInfoKiryuu(url string) (string, []map[string]string, string, []ko
 	status := strings.TrimSpace(doc.Find(".infotable tr:contains('Status') td:nth-child(2)").Text())
 	typeInfo := strings.TrimSpace(doc.Find(".infotable tr:contains('Type') td:nth-child(2)").Text())
 	var genres []komikCast.Genre
-	genres = append(genres, komikCast.Genre{Name: status})
 	genres = append(genres, komikCast.Genre{Name: "Kiryuu"})
+	genres = append(genres, komikCast.Genre{Name: status})
 
 	if typeInfo != "" {
 		genres = append(genres, komikCast.Genre{Name: typeInfo})
