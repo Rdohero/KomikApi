@@ -48,6 +48,17 @@ func main() {
 	komikCast.GET("/genre", controllers.GetGenreInfo)
 	komikCast.GET("/genre/komik", controllers.FetchComicsByGenre)
 
+	kiryuu.GET("/daftar-komik", func(c *gin.Context) {
+		page := c.Query("page")
+
+		response, err := controllers.GetDaftarKomikKiryuu(page)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, response)
+	})
 	kiryuu.GET("/search", controllers.SearchKomikKiryuu)
 	kiryuu.GET("/komik-info", controllers.GetKomikInfoKiryuu)
 	kiryuu.GET("/fetch-data", controllers.GetDataHandlerKiryuu)
