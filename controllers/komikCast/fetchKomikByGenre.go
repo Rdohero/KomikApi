@@ -9,6 +9,7 @@ import (
 type Comic struct {
 	Title     string `json:"title"`
 	Link      string `json:"link"`
+	Source    string `json:"source"`
 	ImageLink string `json:"image_link"`
 }
 
@@ -32,6 +33,8 @@ func FetchComicsByGenre(c *gin.Context) {
 
 		// Get title
 		comic.Title = s.Find(".title").Text()
+
+		comic.Source = "komik_cast"
 
 		// Get link
 		link, exists := s.Find("a").Attr("href")
