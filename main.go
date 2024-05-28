@@ -24,6 +24,9 @@ func main() {
 		AllowCredentials: true,
 	}
 	router.Use(cors.New(config))
+
+	router.Static("/images", "images/")
+
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, "Pong")
 	})
