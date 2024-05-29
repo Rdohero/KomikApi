@@ -10,17 +10,12 @@ import (
 )
 
 type Komik struct {
-	Title         string `json:"title"`
-	Chapter       string `json:"chapter"`
-	Rating        string `json:"rating"`
-	Source        string `json:"source"`
-	Image         string `json:"image"`
-	Type          string `json:"type"`
-	IsCompleted   bool   `json:"isCompleted"`
-	Link          string `json:"link"`
-	LinkId        string `json:"linkId"`
-	LinkChapter   string `json:"linkChapter"`
-	LinkIdChapter string `json:"linkIdChapter"`
+	Title   string `json:"title"`
+	Chapter string `json:"chapter"`
+	Rating  string `json:"rating"`
+	Source  string `json:"source"`
+	Image   string `json:"image"`
+	Link    string `json:"link"`
 }
 
 type KomikResponse struct {
@@ -72,25 +67,18 @@ func GetDaftarKomik(order string, page string) (KomikResponse, error) {
 		chapter := strings.TrimSpace(strings.Replace(s.Find("div.chapter").Text(), "Ch.", "", 1))
 		rating := s.Find("div.numscore").Text()
 		image, _ := s.Find("img").Attr("src")
-		komikType := s.Find("span.type").Text()
-		isCompleted := s.Find("span.Completed").Length() > 0
 
 		linkChapter, _ := s.Find("div.chapter").Attr("href")
 		linkIdChapter := strings.TrimPrefix(linkChapter, allUrl.KomikCastUrl+"/chapter/")
 		linkIdChapter = strings.TrimSuffix(linkIdChapter, "/")
 
 		daftarKomik = append(daftarKomik, Komik{
-			Title:         strings.TrimSpace(title),
-			Chapter:       chapter,
-			Rating:        strings.TrimSpace(rating),
-			Source:        "komik_cast",
-			Image:         strings.TrimSpace(image),
-			Type:          strings.TrimSpace(komikType),
-			IsCompleted:   isCompleted,
-			Link:          link,
-			LinkId:        linkId,
-			LinkChapter:   linkChapter,
-			LinkIdChapter: linkIdChapter,
+			Title:   strings.TrimSpace(title),
+			Chapter: chapter,
+			Rating:  strings.TrimSpace(rating),
+			Source:  "komik_cast",
+			Image:   strings.TrimSpace(image),
+			Link:    link,
 		})
 	})
 

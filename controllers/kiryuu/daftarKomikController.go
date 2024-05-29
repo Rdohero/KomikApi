@@ -10,12 +10,12 @@ import (
 )
 
 type DaftarKomikModelKiryuu struct {
-	Title    string `json:"title"`
-	Thumb    string `json:"thumb"`
-	Chapter  string `json:"chapter"`
-	Rating   string `json:"rating"`
-	Source   string `json:"source"`
-	KomikURL string `json:"komikUrl"`
+	Title   string `json:"title"`
+	Chapter string `json:"chapter"`
+	Rating  string `json:"rating"`
+	Source  string `json:"source"`
+	Image   string `json:"image"`
+	Link    string `json:"link"`
 }
 
 type KomikResponseKiryuu struct {
@@ -61,12 +61,12 @@ func GetDaftarKomikKiryuu(page string) (KomikResponseKiryuu, error) {
 		image, _ := s.Find("img.ts-post-image").Attr("src")
 
 		daftarKomik = append(daftarKomik, DaftarKomikModelKiryuu{
-			Title:    strings.TrimSpace(title),
-			Thumb:    image,
-			Source:   "kiryuu",
-			Chapter:  chapter,
-			Rating:   strings.TrimSpace(rating),
-			KomikURL: link,
+			Title:   strings.TrimSpace(title),
+			Image:   image,
+			Source:  "kiryuu",
+			Chapter: chapter,
+			Rating:  strings.TrimSpace(rating),
+			Link:    link,
 		})
 	})
 
