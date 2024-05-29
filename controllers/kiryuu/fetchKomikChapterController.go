@@ -11,11 +11,9 @@ import (
 )
 
 func fetchDataFromURLKiryuu(pageURL string) ([]string, error) {
-	// Create context
 	ctx, cancel := chromedp.NewContext(context.Background())
 	defer cancel()
 
-	// Navigate to the URL and retrieve the HTML content
 	var htmlContent string
 	err := chromedp.Run(ctx,
 		chromedp.Navigate(pageURL),
@@ -26,7 +24,6 @@ func fetchDataFromURLKiryuu(pageURL string) ([]string, error) {
 		return nil, fmt.Errorf("error navigating to the page: %v", err)
 	}
 
-	// Process the HTML content using goquery
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlContent))
 	if err != nil {
 		return nil, fmt.Errorf("error parsing HTML: %v", err)

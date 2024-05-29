@@ -19,8 +19,8 @@ type DaftarKomikModelKiryuu struct {
 }
 
 type KomikResponseKiryuu struct {
-	DaftarKomikModelKiryuu []DaftarKomikModelKiryuu `json:"daftar_komik_model_kiryuu"`
-	PaginationPage         int                      `json:"page"`
+	DaftarKomik    []DaftarKomikModelKiryuu `json:"daftar_komik"`
+	PaginationPage int                      `json:"page"`
 }
 
 func GetDaftarKomikKiryuu(page string) (KomikResponseKiryuu, error) {
@@ -71,7 +71,7 @@ func GetDaftarKomikKiryuu(page string) (KomikResponseKiryuu, error) {
 	})
 
 	return KomikResponseKiryuu{
-		DaftarKomikModelKiryuu: daftarKomik,
-		PaginationPage:         paginationPage,
+		DaftarKomik:    daftarKomik,
+		PaginationPage: paginationPage,
 	}, nil
 }
