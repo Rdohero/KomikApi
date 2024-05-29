@@ -19,7 +19,7 @@ type DaftarKomikModelKiryuu struct {
 }
 
 type KomikResponseKiryuu struct {
-	DaftarKomik    []DaftarKomikModelKiryuu `json:"daftar_komik"`
+	DaftarKomik    []DaftarKomikModelKiryuu `json:"daftarKomik"`
 	PaginationPage int                      `json:"page"`
 }
 
