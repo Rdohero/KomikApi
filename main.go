@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	doujindesu2 "komikApi/controllers/doujindesu"
 	kiryuu2 "komikApi/controllers/kiryuu"
 	komikCast2 "komikApi/controllers/komikCast"
 	"komikApi/initializers"
@@ -11,8 +12,8 @@ import (
 
 func init() {
 	initializers.LoadEnvVariables()
-	initializers.ConnectToDb()
-	initializers.MigrateDatabase()
+	//initializers.ConnectToDb()
+	//initializers.MigrateDatabase()
 }
 
 func main() {
@@ -33,6 +34,7 @@ func main() {
 
 	komikCast := router.Group("/komikCast")
 	kiryuu := router.Group("/kiryuu")
+	doujindesu := router.Group("/doujindesu")
 
 	komikCast.GET("/daftar-komik", func(c *gin.Context) {
 		order := c.Query("order")
@@ -66,6 +68,16 @@ func main() {
 	kiryuu.GET("/search", kiryuu2.SearchKomikKiryuu)
 	kiryuu.GET("/komik-info", kiryuu2.GetKomikInfoKiryuu)
 	kiryuu.GET("/fetch-data", kiryuu2.GetDataHandlerKiryuu)
+
+	doujindesu.GET("/daftar-komik", func(c *gin.Context) {
+		response, err := doujindesu2.GetDaftarKomikDoujindesu()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, response)
+	})
 
 	router.Run()
 }
