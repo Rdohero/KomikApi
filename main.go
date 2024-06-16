@@ -78,6 +78,8 @@ func main() {
 
 		c.JSON(http.StatusOK, response)
 	})
+	doujindesu.GET("/komik-info", doujindesu2.GetKomikInfoDoujindesu)
+	doujindesu.GET("/fetch-data", doujindesu2.GetDataHandlerDoujindesu)
 
 	router.Run()
 }
