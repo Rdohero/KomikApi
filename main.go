@@ -28,10 +28,6 @@ func main() {
 
 	router.Static("/images", "images/")
 
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, "Pong")
-	})
-
 	komikCast := router.Group("/komikCast")
 	kiryuu := router.Group("/kiryuu")
 	doujindesu := router.Group("/doujindesu")
@@ -80,6 +76,10 @@ func main() {
 	})
 	doujindesu.GET("/komik-info", doujindesu2.GetKomikInfoDoujindesu)
 	doujindesu.GET("/fetch-data", doujindesu2.GetDataHandlerDoujindesu)
+
+	router.GET("/ping", func(c *gin.Context) {
+		c.JSON(http.StatusOK, "Pong")
+	})
 
 	router.Run()
 }
